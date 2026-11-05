@@ -2,7 +2,8 @@
 **Built with AWS Strands Agents SDK for Social Good**  
 **Author:** Khushboo Pandey  
 **Track:** Health & Social Good  
-**Hackathon:** Strands SDK: Workshop to Ship (AWS Builder Center)
+**Hackathon:** Strands SDK: Workshop to Ship (AWS Builder Center)  
+**Public Repository:** [https://github.com/khushboopandey6/rxguardian-strands-agent](https://github.com/khushboopandey6/rxguardian-strands-agent)
 
 ---
 

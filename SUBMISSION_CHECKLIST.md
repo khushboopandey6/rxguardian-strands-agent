@@ -25,7 +25,7 @@ git add .
 git commit -m "Initial commit: RxGuardian AI agent built with AWS Strands Agents SDK"
 # Create a new public repo on your GitHub (e.g. https://github.com/your-username/rxguardian-strands-agent)
 git branch -M main
-git remote add origin https://github.com/YOUR_GITHUB_USERNAME/rxguardian-strands-agent.git
+git remote add origin https://github.com/khushboopandey6/rxguardian-strands-agent
 git push -u origin main
 ```
 
