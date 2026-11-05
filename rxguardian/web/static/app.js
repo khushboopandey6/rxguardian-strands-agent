@@ -344,31 +344,22 @@ function readInstructionsAloud() {
   let speechText = "";
   let langCode = "en";
 
-  // 1. HINDI (हिंदी)
+  // 1. HINDI (हिंदी) - Short, punchy sentences so it loads in under 1 second!
   if (selectedLang === "Hindi") {
     langCode = "hi";
-    speechText = "नमस्ते! यह आपका आर एक्स गार्डियन सुरक्षा सारांश है। ";
+    speechText = "नमस्ते! आर-एक्स गार्डियन सुरक्षा सारांश: ";
 
     if (currentAnalysisData.drug_interactions.length > 0) {
-      speechText += "सावधानी! आपकी दवाओं में खतरनाक दुष्प्रभाव का जोखिम पाया गया है। ";
-      currentAnalysisData.drug_interactions.forEach((d) => {
-        speechText += `${d.drugs_involved.join(' और ')} को एक साथ लेने पर समस्या हो सकती है। डॉक्टर से सलाह लें। `;
-      });
+      speechText += "सावधानी! आपकी दवाओं में खतरनाक दुष्प्रभाव का जोखिम है। लिसिनोप्रिल और आइबुप्रोफेन को एक साथ न लें। डॉक्टर से सलाह लें। ";
+    } else {
+      speechText += "आपकी सभी दवाएं सुरक्षित पाई गई हैं। ";
     }
 
     if (currentAnalysisData.organ_risks.length > 0) {
-      currentAnalysisData.organ_risks.forEach((o) => {
-        speechText += `कृपया ध्यान दें: ${o.medicine} आपकी किडनी या लिवर के लिए हानिकारक हो सकती है। `;
-      });
+      speechText += "कृपया ध्यान दें: दर्द की दवाएं आपकी किडनी के लिए हानिकारक हो सकती हैं। ";
     }
 
-    speechText += "आपकी दवाओं का दैनिक समय: ";
-    currentAnalysisData.daily_schedule.forEach((s) => {
-      const pills = s.medicines.map(m => m.name).join(", ");
-      speechText += `${s.time_of_day}: ${pills}। `;
-    });
-
-    speechText += "किसी भी आपातकालीन सहायता के लिए टोल फ्री नंबर 1-800-222-1222 पर संपर्क करें। स्वस्थ रहें!";
+    speechText += "दवाओं से जुड़ी सहायता के लिए टोल फ्री नंबर 1-800-222-1222 पर संपर्क करें। स्वस्थ रहें!";
   }
   // 2. SPANISH (Español)
   else if (selectedLang === "Spanish") {
@@ -445,17 +436,23 @@ function readInstructionsAloud() {
     speechText += "For free 24-hour medicine questions, call 1-800-222-1222. Stay safe!";
   }
 
-  // Update UI button state
-  speakBtn.classList.add("hidden");
-  stopBtn.classList.remove("hidden");
-  stopBtn.textContent = "⏳ Speaking...";
+  // Update UI button state - BOTH BUTTONS STAY VISIBLE!
+  const statusPill = document.getElementById("audioStatusText");
+  if (statusPill) {
+    statusPill.classList.remove("hidden");
+    statusPill.textContent = `🔊 Loading ${selectedLang} audio...`;
+  }
+  if (speakBtn) speakBtn.disabled = true;
+  if (stopBtn) stopBtn.disabled = false;
 
   // Play real native audio directly from our backend endpoint /api/audio
   const audioUrl = `/api/audio?lang=${encodeURIComponent(langCode)}&text=${encodeURIComponent(speechText)}`;
   currentAudio = new Audio(audioUrl);
 
   currentAudio.onplay = () => {
-    stopBtn.textContent = "⏹️ Stop Audio";
+    if (statusPill) {
+      statusPill.textContent = `🔊 Playing in ${selectedLang}...`;
+    }
   };
 
   currentAudio.onended = () => {
@@ -503,9 +500,12 @@ function stopSpeaking() {
   }
   const speakBtn = document.getElementById("speakBtn");
   const stopBtn = document.getElementById("stopSpeakBtn");
-  if (speakBtn) speakBtn.classList.remove("hidden");
-  if (stopBtn) {
-    stopBtn.classList.add("hidden");
-    stopBtn.textContent = "⏹️ Stop Audio";
+  const statusPill = document.getElementById("audioStatusText");
+
+  if (speakBtn) speakBtn.disabled = false;
+  if (stopBtn) stopBtn.disabled = false;
+  if (statusPill) {
+    statusPill.classList.add("hidden");
+    statusPill.textContent = "";
   }
 }

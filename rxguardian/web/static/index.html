@@ -169,17 +169,18 @@ Patient also taking OTC Ibuprofen (Advil) 400mg TID PRN for severe knee pain.</t
                 <span class="audio-label">Voice:</span>
                 <select id="audioLanguageSelect" class="audio-lang-select" title="Choose audio language">
                   <option value="English">🇺🇸 English</option>
-                  <option value="Hindi">🇮🇳 हिंदी (Hindi)</option>
+                  <option value="Hindi" selected>🇮🇳 हिंदी (Hindi)</option>
                   <option value="Spanish">🇪🇸 Español</option>
                   <option value="Tagalog">🇵🇭 Tagalog</option>
                 </select>
               </div>
-              <button id="speakBtn" class="btn btn-primary btn-sm" title="Read instructions aloud for patients with low vision">
+              <button id="speakBtn" class="btn btn-primary btn-sm" title="Read instructions aloud">
                 🔊 Read Aloud
               </button>
-              <button id="stopSpeakBtn" class="btn btn-secondary btn-sm hidden" title="Stop audio">
-                ⏹️ Stop
+              <button id="stopSpeakBtn" class="btn btn-danger btn-sm" title="Stop playing audio">
+                ⏹️ Stop Audio
               </button>
+              <span id="audioStatusText" class="audio-status-pill hidden"></span>
               <button id="printBtn" class="btn btn-secondary btn-sm" title="Print friendly handout for patient">
                 🖨️ Print Leaflet
               </button>
@@ -240,6 +241,6 @@ Patient also taking OTC Ibuprofen (Advil) 400mg TID PRN for severe knee pain.</t
     </div>
   </footer>
 
-  <script src="/static/app.js?v=4"></script>
+  <script src="/static/app.js?v=5"></script>
 </body>
 </html>
