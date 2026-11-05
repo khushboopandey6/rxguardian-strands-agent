@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RxGuardian - AI Health Equity & Prescription Safety Agent</title>
+  <meta name="description" content="An AI agent system built with AWS Strands Agents SDK that protects underserved patients from dangerous drug interactions and translates medical jargon into plain language.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+
+  <!-- Top Announcement Banner -->
+  <header class="top-header">
+    <div class="header-inner">
+      <div class="brand">
+        <span class="brand-badge">AWS Strands Agents SDK</span>
+        <h1 class="brand-title">RxGuardian</h1>
+        <p class="brand-subtitle">AI Health Equity & Prescription Safety Swarm</p>
+      </div>
+      <div class="header-meta">
+        <span class="status-pill"><span class="dot live-pulse"></span> Multi-Agent Pipeline Active</span>
+        <span class="author-tag">Built by Khushboo Pandey • Social Good Track</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-container">
+    
+    <!-- Hero / Problem Intro Card -->
+    <section class="intro-card">
+      <div class="intro-text">
+        <h2>Protecting Underserved Patients from Preventable Medication Harm</h2>
+        <p>Over 1.5 million people are harmed every year by preventable prescription errors, with elderly, ESL, and low-literacy patients at highest risk. RxGuardian uses a 5-agent Strands graph to screen dangerous drug clashes, simplify instructions to a 5th-grade reading level, and generate clear daily routines.</p>
+      </div>
+      <div class="intro-presets">
+        <span class="preset-label">⚡ Try a 1-Click Patient Scenario:</span>
+        <div class="preset-buttons" id="presetButtons">
+          <!-- Populated by JavaScript -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Workspace Grid -->
+    <div class="workspace-grid">
+
+      <!-- Left Column: Patient & Prescription Input -->
+      <section class="input-panel">
+        <div class="panel-header">
+          <h3>📋 Patient & Prescription Input</h3>
+          <span class="hint-text">Step 1 of 2</span>
+        </div>
+
+        <form id="prescriptionForm" class="prescription-form">
+          <div class="form-row">
+            <div class="form-group flex-1">
+              <label for="patientAge">Patient Age</label>
+              <input type="number" id="patientAge" value="72" min="1" max="120" required>
+            </div>
+            <div class="form-group flex-2">
+              <label for="patientLanguage">Preferred Language</label>
+              <select id="patientLanguage">
+                <option value="English" selected>English (5th Grade Simple)</option>
+                <option value="Spanish">Español (Spanish)</option>
+                <option value="Hindi">हिंदी (Hindi)</option>
+                <option value="Tagalog">Tagalog (Filipino)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="patientConditions">Known Health Conditions (Comma separated)</label>
+            <input type="text" id="patientConditions" value="Chronic Kidney Disease (CKD), Hypertension, Type 2 Diabetes" placeholder="e.g. Kidney disease, High blood pressure">
+          </div>
+
+          <div class="form-group">
+            <label for="prescriptionText">Doctor's Note, Discharge Summary, or Pill List</label>
+            <textarea id="prescriptionText" rows="6" required placeholder="Paste prescription note or list of medications here...">Rx: Metformin 500mg PO BID with meals.
+Lisinopril 10mg PO daily in AM.
+Patient also taking OTC Ibuprofen (Advil) 400mg TID PRN for severe knee pain.</textarea>
+          </div>
+
+          <button type="submit" id="analyzeBtn" class="btn btn-primary">
+            <span class="btn-icon">⚡</span> Run Strands Agent Swarm
+          </button>
+        </form>
+
+        <!-- Live Agent Flow Visualizer -->
+        <div class="agent-flow-box">
+          <div class="flow-header">
+            <h4>🤖 Strands Multi-Agent Workflow</h4>
+            <span class="flow-badge">Autonomous Graph</span>
+          </div>
+          <div class="flow-steps">
+            <div class="flow-step" id="step-parser">
+              <span class="step-icon">1</span>
+              <div class="step-info">
+                <strong>Parser Agent</strong>
+                <small>Extracts meds, doses & instructions</small>
+              </div>
+              <span class="step-status">Ready</span>
+            </div>
+            <div class="flow-step" id="step-screener">
+              <span class="step-icon">2</span>
+              <div class="step-info">
+                <strong>Interaction Screener</strong>
+                <small>Executes @tool clinical checks</small>
+              </div>
+              <span class="step-status">Ready</span>
+            </div>
+            <div class="flow-step" id="step-plain">
+              <span class="step-icon">3</span>
+              <div class="step-info">
+                <strong>Plain Language Agent</strong>
+                <small>Translates to 5th-grade readability</small>
+              </div>
+              <span class="step-status">Ready</span>
+            </div>
+            <div class="flow-step" id="step-scheduler">
+              <span class="step-icon">4</span>
+              <div class="step-info">
+                <strong>Schedule Planner</strong>
+                <small>Maps safe daily time blocks</small>
+              </div>
+              <span class="step-status">Ready</span>
+            </div>
+            <div class="flow-step" id="step-safety">
+              <span class="step-icon">5</span>
+              <div class="step-info">
+                <strong>Safety Escalation</strong>
+                <small>Connects 24/7 crisis hotlines</small>
+              </div>
+              <span class="step-status">Ready</span>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Right Column: Results & Patient Safety Dashboard -->
+      <section class="results-panel" id="resultsPanel">
+
+        <!-- Welcome Placeholder State -->
+        <div id="emptyState" class="empty-state">
+          <div class="empty-icon">💊</div>
+          <h3>Ready to protect patient health!</h3>
+          <p>Choose one of the sample scenarios above or paste a custom prescription to see our Strands Agent swarm coordinate safety checks in real time.</p>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loadingState" class="loading-state hidden">
+          <div class="spinner"></div>
+          <h3 id="loadingTitle">Running Strands Multi-Agent Graph...</h3>
+          <p id="loadingSub">Agents are analyzing clinical databases and simplifying language.</p>
+        </div>
+
+        <!-- Active Results Content -->
+        <div id="resultsContent" class="results-content hidden">
+
+          <!-- Action bar -->
+          <div class="results-action-bar">
+            <div class="telemetry-badge" id="telemetryBadge">
+              ⚡ Completed in <span id="telemetryTime">0.8s</span> • <span id="telemetryAgents">5</span> Agents Coordinated
+            </div>
+            <div class="btn-group">
+              <button id="speakBtn" class="btn btn-secondary btn-sm" title="Read instructions aloud for patients with low vision">
+                🔊 Read Aloud
+              </button>
+              <button id="printBtn" class="btn btn-secondary btn-sm" title="Print friendly handout for patient">
+                🖨️ Print Leaflet
+              </button>
+            </div>
+          </div>
+
+          <!-- Urgent Warning Banner (If High Risk Clashes) -->
+          <div id="highRiskAlert" class="high-risk-alert hidden">
+            <div class="alert-icon">⚠️</div>
+            <div class="alert-body">
+              <h4 id="alertTitle">High-Risk Medication Clashes Detected!</h4>
+              <p id="alertSummary">Review these important warnings before taking these medicines together.</p>
+            </div>
+          </div>
+
+          <!-- Section 1: Drug Interaction Warnings -->
+          <div class="result-section">
+            <h4 class="section-title">⚠️ Medication & Health Warnings</h4>
+            <div id="drugInteractionsList" class="cards-list"></div>
+          </div>
+
+          <!-- Section 2: Food & Dietary Precautions -->
+          <div class="result-section">
+            <h4 class="section-title">🥗 Foods & Drinks to Avoid</h4>
+            <div id="foodInteractionsList" class="cards-list"></div>
+          </div>
+
+          <!-- Section 3: Daily Routine Calendar -->
+          <div class="result-section">
+            <h4 class="section-title">⏰ Your Daily Medicine Schedule</h4>
+            <div id="scheduleTimeline" class="timeline-grid"></div>
+          </div>
+
+          <!-- Section 4: Plain-Language Medicine Cards -->
+          <div class="result-section">
+            <h4 class="section-title">📖 What Your Medicines Do (Plain Language)</h4>
+            <div id="plainCardsList" class="cards-list"></div>
+          </div>
+
+          <!-- Section 5: Emergency Safety Contacts -->
+          <div class="result-section emergency-section">
+            <h4 class="section-title">🚨 24/7 Free Support & Emergency Hotlines</h4>
+            <div id="hotlinesList" class="hotlines-grid"></div>
+          </div>
+
+        </div>
+
+      </section>
+
+    </div>
+
+  </main>
+
+  <footer class="app-footer">
+    <div class="footer-inner">
+      <p>RxGuardian is an AI prototype built for the <strong>AWS Builder Center Hackathon: Strands SDK: Workshop to Ship</strong>.</p>
+      <p class="disclaimer">⚠️ Disclaimer: Educational and health equity demonstration tool. Always consult a licensed healthcare professional for medical decisions.</p>
+    </div>
+  </footer>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
