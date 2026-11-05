@@ -31,19 +31,10 @@ git push -u origin main
 
 ---
 
-### ✅ Step 3: Record & Upload Your 3-Minute Demo Video
+### ✅ Step 3: Demo Video Recorded & Uploaded!
 The rules state:
 > *"A short, publicly available demo video, under three minutes, showing the agent working."*
-- [ ] Launch the web app locally:
-  ```bash
-  cd /Users/kashi/.gemini/antigravity-ide/scratch/rxguardian-strands-agent
-  python3 main.py
-  ```
-- [ ] Open `http://localhost:8000` in Google Chrome.
-- [ ] Open **QuickTime Player** on your Mac (File -> New Screen Recording) or Loom.
-- [ ] Follow [DEMO_VIDEO_SCRIPT.md](file:///Users/kashi/.gemini/antigravity-ide/scratch/rxguardian-strands-agent/DEMO_VIDEO_SCRIPT.md) (takes ~2 minutes 45 seconds).
-- [ ] Upload the video to YouTube (set to **Public** or **Unlisted**) or Loom.
-- [ ] Copy the video URL.
+- [x] **Demo Video URL:** [https://youtu.be/w7UrhKnoiq0](https://youtu.be/w7UrhKnoiq0) (Uploaded to YouTube)
 
 ---
 

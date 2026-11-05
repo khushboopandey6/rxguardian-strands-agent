@@ -6,8 +6,11 @@
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![Strands](https://img.shields.io/badge/AWS%20Strands%20SDK-v1.64-orange.svg)](https://github.com/strands-agents/harness-sdk)
+[![Demo Video](https://img.shields.io/badge/Demo%20Video-YouTube-red.svg)](https://youtu.be/w7UrhKnoiq0)
 [![Tests](https://img.shields.io/badge/Tests-100%25%20Passing-brightgreen.svg)]()
 [![Social Good](https://img.shields.io/badge/Track-Health%20Equity-teal.svg)]()
+
+> 📺 **Watch the Demo Video on YouTube:** [https://youtu.be/w7UrhKnoiq0](https://youtu.be/w7UrhKnoiq0)
 
 ---
 

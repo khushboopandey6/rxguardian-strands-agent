@@ -1,6 +1,7 @@
 # RxGuardian: 3-Minute Video Demo Script
 **Hackathon Submission Video for "Strands SDK: Workshop to Ship"**  
 **Presenter:** Khushboo Pandey  
+**Live YouTube Video:** [https://youtu.be/w7UrhKnoiq0](https://youtu.be/w7UrhKnoiq0)  
 **Target Duration:** 2 minutes 45 seconds (Under 3 minutes requirement)
 
 ---

@@ -3,7 +3,8 @@
 **Author:** Khushboo Pandey  
 **Track:** Health & Social Good  
 **Hackathon:** Strands SDK: Workshop to Ship (AWS Builder Center)  
-**Public Repository:** [https://github.com/khushboopandey6/rxguardian-strands-agent](https://github.com/khushboopandey6/rxguardian-strands-agent)
+**Public Repository:** [https://github.com/khushboopandey6/rxguardian-strands-agent](https://github.com/khushboopandey6/rxguardian-strands-agent)  
+**Demo Video:** [https://youtu.be/w7UrhKnoiq0](https://youtu.be/w7UrhKnoiq0)
 
 ---
 
