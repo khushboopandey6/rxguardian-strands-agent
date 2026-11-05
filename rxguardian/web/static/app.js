@@ -1,8 +1,9 @@
 // app.js - Client-side script for RxGuardian
 // Written by Khushboo for our AWS Strands Hackathon project
-// Handles multi-agent pipeline animation, result cards, and multilingual audio reading!
+// Handles multi-agent pipeline animation, result cards, and authentic native audio reading!
 
 let currentAnalysisData = null;
+let currentAudio = null;
 
 // When the browser finishes loading the page
 document.addEventListener("DOMContentLoaded", () => {
@@ -18,22 +19,22 @@ document.addEventListener("DOMContentLoaded", () => {
   // 3. Keep patient language dropdown and audio language selector in sync!
   const patientLang = document.getElementById("patientLanguage");
   const audioLang = document.getElementById("audioLanguageSelect");
-  patientLang.addEventListener("change", () => {
-    if (audioLang) {
+  if (patientLang && audioLang) {
+    patientLang.addEventListener("change", () => {
       audioLang.value = patientLang.value;
-    }
-  });
+    });
+  }
 
   // 4. Listen for Read Aloud speech button and Stop button
   const speakBtn = document.getElementById("speakBtn");
-  speakBtn.addEventListener("click", readInstructionsAloud);
+  if (speakBtn) speakBtn.addEventListener("click", readInstructionsAloud);
 
   const stopBtn = document.getElementById("stopSpeakBtn");
-  stopBtn.addEventListener("click", stopSpeaking);
+  if (stopBtn) stopBtn.addEventListener("click", stopSpeaking);
 
   // 5. Listen for Print button
   const printBtn = document.getElementById("printBtn");
-  printBtn.addEventListener("click", () => window.print());
+  if (printBtn) printBtn.addEventListener("click", () => window.print());
 });
 
 // Load the 3 preset patient scenarios from our API
@@ -325,29 +326,28 @@ function renderResults(data) {
   });
 }
 
-// Web Speech API: Reads out loud in English, Hindi, Spanish, or Tagalog!
+// Plays authentic, native spoken audio in Hindi, Spanish, Tagalog, or English!
 function readInstructionsAloud() {
-  if (!('speechSynthesis' in window)) {
-    alert("Sorry, your web browser does not support text-to-speech audio.");
-    return;
-  }
+  const speakBtn = document.getElementById("speakBtn");
+  const stopBtn = document.getElementById("stopSpeakBtn");
 
-  // Cancel any ongoing speech first
-  window.speechSynthesis.cancel();
+  // If already playing audio, stop it
+  stopSpeaking();
 
   if (!currentAnalysisData) {
     alert("Please run an analysis first to read aloud!");
     return;
   }
 
+  // Get selected language from voice dropdown
   const selectedLang = document.getElementById("audioLanguageSelect").value;
   let speechText = "";
-  let bcp47Code = "en-US";
+  let langCode = "en";
 
   // 1. HINDI (हिंदी)
   if (selectedLang === "Hindi") {
-    bcp47Code = "hi-IN";
-    speechText = "नमस्ते! यह आपका आर-एक्स गार्डियन सुरक्षा सारांश है। ";
+    langCode = "hi";
+    speechText = "नमस्ते! यह आपका आर एक्स गार्डियन सुरक्षा सारांश है। ";
 
     if (currentAnalysisData.drug_interactions.length > 0) {
       speechText += "सावधानी! आपकी दवाओं में खतरनाक दुष्प्रभाव का जोखिम पाया गया है। ";
@@ -368,11 +368,11 @@ function readInstructionsAloud() {
       speechText += `${s.time_of_day}: ${pills}। `;
     });
 
-    speechText += "किसी भी आपातकालीन सहायता के लिए टोल फ्री नंबर एक आठ शून्य शून्य दो दो दो एक दो दो दो पर संपर्क करें। स्वस्थ रहें!";
+    speechText += "किसी भी आपातकालीन सहायता के लिए टोल फ्री नंबर 1-800-222-1222 पर संपर्क करें। स्वस्थ रहें!";
   }
   // 2. SPANISH (Español)
   else if (selectedLang === "Spanish") {
-    bcp47Code = "es-ES";
+    langCode = "es";
     speechText = "¡Hola! Este es su resumen de seguridad médica de RxGuardian. ";
 
     if (currentAnalysisData.drug_interactions.length > 0) {
@@ -394,11 +394,11 @@ function readInstructionsAloud() {
       speechText += `${s.time_of_day}: ${pills}. `;
     });
 
-    speechText += "Para consultas médicas gratuitas las 24 horas, llame al 1-800-222-1222. ¡Cuide su salud!";
+    speechText += "Para consultas gratuitas las 24 horas, llame al 1-800-222-1222. ¡Cuide su salud!";
   }
   // 3. TAGALOG (Filipino)
   else if (selectedLang === "Tagalog") {
-    bcp47Code = "fil-PH";
+    langCode = "tl";
     speechText = "Kamusta! Narito ang iyong buod ng kaligtasan sa gamot mula sa RxGuardian. ";
 
     if (currentAnalysisData.drug_interactions.length > 0) {
@@ -418,7 +418,7 @@ function readInstructionsAloud() {
   }
   // 4. ENGLISH (Default)
   else {
-    bcp47Code = "en-US";
+    langCode = "en";
     speechText = "Hello! Here is your RxGuardian safety summary. ";
 
     if (currentAnalysisData.drug_interactions.length > 0) {
@@ -445,47 +445,67 @@ function readInstructionsAloud() {
     speechText += "For free 24-hour medicine questions, call 1-800-222-1222. Stay safe!";
   }
 
-  const utterance = new SpeechSynthesisUtterance(speechText);
-  utterance.lang = bcp47Code;
-  utterance.rate = 0.92;
-  utterance.pitch = 1.0;
+  // Update UI button state
+  speakBtn.classList.add("hidden");
+  stopBtn.classList.remove("hidden");
+  stopBtn.textContent = "⏳ Speaking...";
 
-  // Look for a voice matching this language
+  // Play real native audio directly from our backend endpoint /api/audio
+  const audioUrl = `/api/audio?lang=${encodeURIComponent(langCode)}&text=${encodeURIComponent(speechText)}`;
+  currentAudio = new Audio(audioUrl);
+
+  currentAudio.onplay = () => {
+    stopBtn.textContent = "⏹️ Stop Audio";
+  };
+
+  currentAudio.onended = () => {
+    stopSpeaking();
+  };
+
+  currentAudio.onerror = (err) => {
+    console.warn("Backend audio error, falling back to browser SpeechSynthesis", err);
+    fallbackToSpeechSynthesis(speechText, langCode);
+  };
+
+  currentAudio.play().catch((err) => {
+    console.warn("Audio play blocked by browser, trying SpeechSynthesis fallback", err);
+    fallbackToSpeechSynthesis(speechText, langCode);
+  });
+}
+
+// Fallback to browser's SpeechSynthesis if browser blocks audio
+function fallbackToSpeechSynthesis(text, langCode) {
+  if (!('speechSynthesis' in window)) return;
+  window.speechSynthesis.cancel();
+  
+  const bcpMap = { "hi": "hi-IN", "es": "es-ES", "tl": "fil-PH", "en": "en-US" };
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = bcpMap[langCode] || "en-US";
+  
   const voices = window.speechSynthesis.getVoices();
-  const langPrefix = bcp47Code.slice(0, 2);
-  const matchedVoice = voices.find((v) => v.lang.toLowerCase().startsWith(langPrefix));
-  if (matchedVoice) {
-    utterance.voice = matchedVoice;
-  }
+  const matched = voices.find(v => v.lang.toLowerCase().startsWith(langCode));
+  if (matched) utterance.voice = matched;
 
-  const speakBtn = document.getElementById("speakBtn");
-  const stopBtn = document.getElementById("stopSpeakBtn");
-
-  utterance.onstart = () => {
-    speakBtn.classList.add("hidden");
-    stopBtn.classList.remove("hidden");
-  };
-
-  utterance.onend = () => {
-    speakBtn.classList.remove("hidden");
-    stopBtn.classList.add("hidden");
-  };
-
-  utterance.onerror = () => {
-    speakBtn.classList.remove("hidden");
-    stopBtn.classList.add("hidden");
-  };
-
+  utterance.onend = () => stopSpeaking();
+  utterance.onerror = () => stopSpeaking();
   window.speechSynthesis.speak(utterance);
 }
 
-// Stop audio playback
+// Stop audio playback immediately
 function stopSpeaking() {
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio.currentTime = 0;
+    currentAudio = null;
+  }
   if ('speechSynthesis' in window) {
     window.speechSynthesis.cancel();
   }
   const speakBtn = document.getElementById("speakBtn");
   const stopBtn = document.getElementById("stopSpeakBtn");
   if (speakBtn) speakBtn.classList.remove("hidden");
-  if (stopBtn) stopBtn.classList.add("hidden");
+  if (stopBtn) {
+    stopBtn.classList.add("hidden");
+    stopBtn.textContent = "⏹️ Stop Audio";
+  }
 }

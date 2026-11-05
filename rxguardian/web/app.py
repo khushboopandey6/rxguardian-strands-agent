@@ -81,3 +81,40 @@ def analyze_prescription(request: PrescriptionRequest):
     except Exception as err:
         print(f"[Error] Failed to analyze prescription: {err}")
         raise HTTPException(status_code=500, detail=str(err))
+
+
+@app.get("/api/audio")
+def generate_speech_audio(text: str, lang: str = "en"):
+    """Generates authentic, high-quality spoken audio in Hindi, Spanish, Tagalog, or English.
+    Returns an MP3 stream so any browser or phone can play it without voice pack issues.
+    """
+    import io
+    from fastapi.responses import Response
+    from gtts import gTTS
+
+    # Map language names to BCP-47 ISO codes
+    lang_map = {
+        "hindi": "hi",
+        "hi": "hi",
+        "spanish": "es",
+        "es": "es",
+        "tagalog": "tl",
+        "tl": "tl",
+        "english": "en",
+        "en": "en",
+    }
+    target_lang = lang_map.get(lang.lower().strip(), "en")
+
+    try:
+        clean_text = text.strip()[:600]
+        if not clean_text:
+            clean_text = "RxGuardian safety alert."
+
+        tts = gTTS(text=clean_text, lang=target_lang)
+        buffer = io.BytesIO()
+        tts.write_to_fp(buffer)
+        buffer.seek(0)
+        return Response(content=buffer.read(), media_type="audio/mpeg")
+    except Exception as err:
+        print(f"[Error] TTS generation failed: {err}")
+        raise HTTPException(status_code=500, detail=f"Audio generation error: {err}")
