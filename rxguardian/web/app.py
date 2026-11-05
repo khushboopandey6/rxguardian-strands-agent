@@ -23,7 +23,7 @@ STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
 
-@app.get("/")
+@app.api_route("/", methods=["GET", "HEAD"])
 def home_page():
     """Serves the main web application page."""
     return FileResponse(os.path.join(STATIC_DIR, "index.html"))

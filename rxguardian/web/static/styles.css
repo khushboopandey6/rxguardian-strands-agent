@@ -589,7 +589,41 @@ body {
 
 .btn-group {
   display: flex;
+  align-items: center;
+  flex-wrap: wrap;
   gap: 0.5rem;
+}
+
+.audio-lang-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 0.25rem 0.5rem;
+}
+
+.audio-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--brand-primary);
+  text-transform: uppercase;
+}
+
+.audio-lang-select {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 0.8rem;
+  font-family: inherit;
+  cursor: pointer;
+  outline: none;
+}
+
+.audio-lang-select option {
+  background: #131b2e;
+  color: #fff;
 }
 
 /* High Risk Banner */
