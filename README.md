@@ -112,7 +112,6 @@ python -m unittest tests/test_rxguardian.py
 ```
 rxguardian-strands-agent/
 ├── BUILDER_CENTER_ARTICLE.md          # Complete hackathon project article
-├── DEMO_VIDEO_SCRIPT.md               # 3-minute video presentation script
 ├── SUBMISSION_CHECKLIST.md            # Final submission checklist
 ├── README.md                          # Project documentation
 ├── requirements.txt                   # Project dependencies
